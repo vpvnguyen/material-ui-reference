@@ -9,3 +9,7 @@
 ### Components
 
 - Build a header - styling and customizing MUI components. React-router for navigation.
+
+- styling - themes
+- customize components with a consistent look
+- benefits: palettes. JSS working at runtime and server-side. less than 15kb. 
