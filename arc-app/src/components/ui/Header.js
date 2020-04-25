@@ -19,7 +19,7 @@ export default function Header(props) {
   return (
     <ElevationScroll>
       {/* has a default class of position='fixed' */}
-      <AppBar>
+      <AppBar color="primary">
         {/* allows content to scale horizontally across the Appbar */}
         <Toolbar>Arc App</Toolbar>
       </AppBar>
