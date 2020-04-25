@@ -1,10 +1,16 @@
 import React from "react";
+
+// components
 import Header from "../components/ui/Header";
+
 // material ui
+import { ThemeProvider } from "@material-ui/styles";
+
+import theme from "./ui/Theme";
 
 function App() {
   return (
-    <div className="App">
+    <ThemeProvider theme={theme}>
       <Header />
       {/* placeholder to show scrolling effect */}
       {[...new Array(120)]
@@ -15,7 +21,7 @@ Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
 Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`
         )
         .join("\n")}
-    </div>
+    </ThemeProvider>
   );
 }
 
