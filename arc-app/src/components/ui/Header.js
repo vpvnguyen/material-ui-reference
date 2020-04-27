@@ -1,5 +1,10 @@
 import React from "react";
-import { AppBar, Toolbar, useScrollTrigger } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  useScrollTrigger,
+} from "@material-ui/core";
 
 // adds subtle effect where header will lift when the page is scrolled
 function ElevationScroll(props) {
@@ -21,7 +26,11 @@ export default function Header(props) {
       {/* has a default class of position='fixed' */}
       <AppBar color="primary">
         {/* allows content to scale horizontally across the Appbar */}
-        <Toolbar>Arc App</Toolbar>
+        <Toolbar>
+          <Typography variant="h3" color="secondary">
+            Arc App
+          </Typography>
+        </Toolbar>
       </AppBar>
     </ElevationScroll>
   );
