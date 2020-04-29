@@ -33,7 +33,13 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "3em", // add extra spacing to push content to offset the extra height added from the responsive units from the logo
   },
   logo: {
-    height: "7em",
+    height: "8em",
+  },
+  logoContainer: {
+    padding: 0, // removes padding from button
+    "&:hover": {
+      backgroundColor: "transparent", // removes overlay when on logo hover
+    },
   },
   tabContainer: {
     marginLeft: "auto", // sets left most margin to extend as much as it can to push the tabs right
@@ -82,7 +88,15 @@ export default function Header(props) {
         <AppBar>
           {/* allows content to scale horizontally across the Appbar */}
           <Toolbar disableGutters>
-            <img alt="company logo" className={classes.logo} src={logo} />
+            <Button
+              disableRipple
+              component={Link}
+              to="/"
+              onClick={() => setActiveTab(0)}
+              className={classes.logoContainer}
+            >
+              <img alt="company logo" className={classes.logo} src={logo} />
+            </Button>
             <Tabs
               value={activeTab}
               onChange={handleActiveTab}
