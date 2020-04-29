@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -60,6 +60,21 @@ export default function Header(props) {
     setActiveTab(value);
   };
 
+  useEffect(() => {
+    // keeps active tab on the correct route
+    if (window.location.pathname === "/" && activeTab !== 0) setActiveTab(0);
+    if (window.location.pathname === "/services" && activeTab !== 1)
+      setActiveTab(1);
+    if (window.location.pathname === "/revolution" && activeTab !== 2)
+      setActiveTab(2);
+    if (window.location.pathname === "/about" && activeTab !== 3)
+      setActiveTab(3);
+    if (window.location.pathname === "/contact" && activeTab !== 4)
+      setActiveTab(4);
+    if (window.location.pathname === "/estimate" && activeTab !== 5)
+      setActiveTab(5);
+  }, [activeTab]); // [activeTab] pass in array of dependencies for hook
+
   return (
     <React.Fragment>
       <ElevationScroll>
@@ -109,6 +124,8 @@ export default function Header(props) {
               variant="contained"
               color="secondary"
               className={classes.button}
+              component={Link}
+              to="estimate"
             >
               Free Estimate
             </Button>
