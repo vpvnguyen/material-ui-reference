@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -53,6 +53,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Header(props) {
   const classes = useStyles();
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleActiveTab = (e, value) => {
+    setActiveTab(value);
+  };
 
   return (
     <React.Fragment>
@@ -62,7 +67,12 @@ export default function Header(props) {
           {/* allows content to scale horizontally across the Appbar */}
           <Toolbar disableGutters>
             <img alt="company logo" className={classes.logo} src={logo} />
-            <Tabs className={classes.tabContainer}>
+            <Tabs
+              value={activeTab}
+              onChange={handleActiveTab}
+              className={classes.tabContainer}
+              indicatorColor="primary" // set active indicator to the same color as the header; hiding the indicator
+            >
               <Tab className={classes.tab} label="Home" />
               <Tab className={classes.tab} label="Services" />
               <Tab className={classes.tab} label="The Revolution" />
