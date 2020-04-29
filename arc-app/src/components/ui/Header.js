@@ -1,5 +1,11 @@
 import React from "react";
-import { AppBar, Toolbar, useScrollTrigger } from "@material-ui/core";
+import {
+  AppBar,
+  Toolbar,
+  useScrollTrigger,
+  Tabs,
+  Tab,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
 import logo from "../../assets/logo.svg";
@@ -27,6 +33,14 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     height: "7em",
   },
+  tabContainer: {
+    marginLeft: "auto", // sets left most margin to extend as much as it can to push the tabs right
+  },
+  tab: {
+    ...theme.typography.tab, // extend typography tab styling from theme
+    minWidth: 10, // removes spacing between tabs
+    marginLeft: "25px", // use px over rem to maintain constant spacing between tabs regardless of device size
+  },
 }));
 
 export default function Header(props) {
@@ -40,6 +54,13 @@ export default function Header(props) {
           {/* allows content to scale horizontally across the Appbar */}
           <Toolbar disableGutters>
             <img alt="company logo" className={classes.logo} src={logo} />
+            <Tabs className={classes.tabContainer}>
+              <Tab className={classes.tab} label="Home" />
+              <Tab className={classes.tab} label="Services" />
+              <Tab className={classes.tab} label="The Revolution" />
+              <Tab className={classes.tab} label="About Us" />
+              <Tab className={classes.tab} label="Contact Us" />
+            </Tabs>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
