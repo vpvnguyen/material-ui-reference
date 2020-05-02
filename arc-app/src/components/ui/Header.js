@@ -171,10 +171,20 @@ export default function Header(props) {
               }}
               // positions MenuItem where Menu is clicked; if removed, it will default to top left of page
               getContentAnchorEl={null}
-              anchorOrigin={{ horizontal: "center" }}
-              transformOrigin={{ horizontal: "center" }}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{ vertical: "bottom", horizontal: "center" }}
               MenuListProps={{ onMouseLeave: handleMenuClose }} // menu will close using MenuListProps when mouse leave
             >
+              <MenuItem
+                onClick={() => {
+                  handleMenuClose();
+                  setActiveTab(1);
+                }}
+                component={Link}
+                to="/Services"
+              >
+                Services
+              </MenuItem>
               <MenuItem
                 onClick={() => {
                   handleMenuClose();
