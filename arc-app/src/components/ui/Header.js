@@ -10,6 +10,9 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { Link } from "react-router-dom";
 
+// menu
+import { Menu, MenuItem } from "@material-ui/core";
+
 import logo from "../../assets/logo.svg";
 
 // adds subtle effect where header will lift when the page is scrolled
@@ -61,9 +64,21 @@ const useStyles = makeStyles((theme) => ({
 export default function Header(props) {
   const classes = useStyles();
   const [activeTab, setActiveTab] = useState(0);
+  const [menuAnchor, setMenuAnchor] = useState(null); // where menu will be rendered
+  const [menuOpen, setMenuOpen] = useState(false); // visibility of menu
 
   const handleActiveTab = (e, value) => {
     setActiveTab(value);
+  };
+
+  const handleMenuOpen = (e) => {
+    setMenuAnchor(e.currentTarget); // contain the element that has been clicked on
+    setMenuOpen(true);
+  };
+
+  const handleMenuClose = (e) => {
+    setMenuAnchor(null);
+    setMenuOpen(false);
   };
 
   useEffect(() => {
@@ -110,9 +125,12 @@ export default function Header(props) {
                 to="/"
               />
               <Tab
+                aria-owns={menuAnchor ? "simple-menu" : undefined} // set menu name when menuAnchor is true
+                aria-haspopup={menuAnchor ? "true" : undefined}
                 className={classes.tab}
-                label="Services"
                 component={Link}
+                onMouseOver={(e) => handleMenuOpen(e)} // opens menu on mouseover
+                label="Services"
                 to="/services"
               />
               <Tab
@@ -143,6 +161,51 @@ export default function Header(props) {
             >
               Free Estimate
             </Button>
+            <Menu
+              id="simple-menu" // should match to tab component of aria-owns
+              menuAnchor={menuAnchor}
+              open={menuOpen}
+              onClose={() => {
+                handleMenuClose();
+                setActiveTab(1);
+              }}
+              // positions MenuItem where Menu is clicked; if removed, it will default to top left of page
+              getContentAnchorEl={null}
+              anchorOrigin={{ horizontal: "center" }}
+              transformOrigin={{ horizontal: "center" }}
+              MenuListProps={{ onMouseLeave: handleMenuClose }} // menu will close using MenuListProps when mouse leave
+            >
+              <MenuItem
+                onClick={() => {
+                  handleMenuClose();
+                  setActiveTab(1);
+                }}
+                component={Link}
+                to="/customsoftware"
+              >
+                Custom Software Development
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleMenuClose();
+                  setActiveTab(1);
+                }}
+                component={Link}
+                to="/mobileapps"
+              >
+                Mobile Development
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleMenuClose();
+                  setActiveTab(1);
+                }}
+                component={Link}
+                to="/websites"
+              >
+                Web Development
+              </MenuItem>
+            </Menu>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
