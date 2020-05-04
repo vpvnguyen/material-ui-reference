@@ -59,9 +59,13 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "25px",
     height: "45px",
   },
+  menu: {
+    backgroundColor: theme.palette.common.blue, // sets menu color theme
+    color: "white",
+  },
 }));
 
-export default function Header(props) {
+const Header = () => {
   const classes = useStyles();
   const [activeTab, setActiveTab] = useState(0);
   const [menuAnchor, setMenuAnchor] = useState(null); // where menu will be rendered
@@ -97,10 +101,10 @@ export default function Header(props) {
   }, [activeTab]); // [activeTab] pass in array of dependencies for hook
 
   return (
-    <React.Fragment>
+    <>
       <ElevationScroll>
         {/* has a default class of position='fixed' */}
-        <AppBar>
+        <AppBar position="fixed">
           {/* allows content to scale horizontally across the Appbar */}
           <Toolbar disableGutters>
             <Button
@@ -163,17 +167,19 @@ export default function Header(props) {
             </Button>
             <Menu
               id="simple-menu" // should match to tab component of aria-owns
-              menuAnchor={menuAnchor}
+              classes={{ paper: classes.menu }}
+              anchorEl={menuAnchor}
               open={menuOpen}
               onClose={() => {
                 handleMenuClose();
                 setActiveTab(1);
               }}
               // positions MenuItem where Menu is clicked; if removed, it will default to top left of page
-              getContentAnchorEl={null}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              transformOrigin={{ vertical: "bottom", horizontal: "center" }}
+              // getContentAnchorEl={null}
+              // anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              // transformOrigin={{ vertical: "bottom", horizontal: "center" }}
               MenuListProps={{ onMouseLeave: handleMenuClose }} // menu will close using MenuListProps when mouse leave
+              elevation={0} // sets le
             >
               <MenuItem
                 onClick={() => {
@@ -220,6 +226,8 @@ export default function Header(props) {
         </AppBar>
       </ElevationScroll>
       <div className={classes.toolbarMargin} />
-    </React.Fragment>
+    </>
   );
-}
+};
+
+export default Header;
