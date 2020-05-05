@@ -62,6 +62,16 @@ const useStyles = makeStyles((theme) => ({
   menu: {
     backgroundColor: theme.palette.common.blue, // sets menu color theme
     color: "white",
+    // sharp box corners around menu
+    borderRadius: "0px",
+  },
+  menuItem: {
+    ...theme.typography.tab,
+    // created highlighting effect
+    opacity: 0.7,
+    "&:hover": {
+      opacity: 1,
+    },
   },
 }));
 
@@ -174,12 +184,8 @@ const Header = () => {
                 handleMenuClose();
                 setActiveTab(1);
               }}
-              // positions MenuItem where Menu is clicked; if removed, it will default to top left of page
-              // getContentAnchorEl={null}
-              // anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              // transformOrigin={{ vertical: "bottom", horizontal: "center" }}
               MenuListProps={{ onMouseLeave: handleMenuClose }} // menu will close using MenuListProps when mouse leave
-              elevation={0} // sets le
+              elevation={0}
             >
               <MenuItem
                 onClick={() => {
@@ -188,6 +194,7 @@ const Header = () => {
                 }}
                 component={Link}
                 to="/Services"
+                classes={{ root: classes.menuItem }}
               >
                 Services
               </MenuItem>
@@ -198,6 +205,7 @@ const Header = () => {
                 }}
                 component={Link}
                 to="/customsoftware"
+                classes={{ root: classes.menuItem }}
               >
                 Custom Software Development
               </MenuItem>
@@ -208,6 +216,7 @@ const Header = () => {
                 }}
                 component={Link}
                 to="/mobileapps"
+                classes={{ root: classes.menuItem }}
               >
                 Mobile Development
               </MenuItem>
@@ -218,6 +227,7 @@ const Header = () => {
                 }}
                 component={Link}
                 to="/websites"
+                classes={{ root: classes.menuItem }}
               >
                 Web Development
               </MenuItem>
