@@ -80,6 +80,7 @@ const Header = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [menuAnchor, setMenuAnchor] = useState(null); // where menu will be rendered
   const [menuOpen, setMenuOpen] = useState(false); // visibility of menu
+  const [selectedIndex, setSelectedIndex] = useState(0); // selected menu items
 
   const handleActiveTab = (e, value) => {
     setActiveTab(value);
@@ -95,23 +96,56 @@ const Header = () => {
     setMenuOpen(false);
   };
 
+  const handleMenuItemClick = (e, i) => {
+    setMenuAnchor(null);
+    setMenuOpen(false);
+    setSelectedIndex(i);
+  };
+
+  const menuOptions = [
+    { name: "Services", link: "/services" },
+    { name: "Custom Software Development", link: "/customsoftware" },
+    { name: "Mobile Development", link: "/mobileapps" },
+    { name: "Web Development", link: "/websites" },
+  ];
+
   useEffect(() => {
     // keeps active tab on the correct route
-    if (window.location.pathname === "/" && activeTab !== 0) setActiveTab(0);
-    if (window.location.pathname === "/services" && activeTab !== 1)
-      setActiveTab(1);
-    if (window.location.pathname === "/revolution" && activeTab !== 2)
-      setActiveTab(2);
-    if (window.location.pathname === "/about" && activeTab !== 3)
-      setActiveTab(3);
-    if (window.location.pathname === "/contact" && activeTab !== 4)
-      setActiveTab(4);
-    if (window.location.pathname === "/estimate" && activeTab !== 5)
-      setActiveTab(5);
+    switch (window.location.pathname) {
+      case "/":
+        if (activeTab !== 0) setActiveTab(0);
+        break;
+      case "/services":
+        if (activeTab !== 1) setActiveTab(1) && setSelectedIndex(0);
+        break;
+      case "/revolution":
+        if (activeTab !== 2) setActiveTab(2);
+        break;
+      case "/about":
+        if (activeTab !== 3) setActiveTab(3);
+        break;
+      case "/contact":
+        if (activeTab !== 4) setActiveTab(4);
+        break;
+      case "/estimate":
+        if (activeTab !== 5) setActiveTab(5);
+        break;
+      case "/customesoftware":
+        if (activeTab !== 1) setActiveTab(1) && setSelectedIndex(1);
+        break;
+      case "/mobileapps":
+        if (activeTab !== 1) setActiveTab(1) && setSelectedIndex(2);
+        break;
+      case "/websites":
+        if (activeTab !== 1) setActiveTab(1) && setSelectedIndex(3);
+        break;
+      default:
+        break;
+    }
   }, [activeTab]); // [activeTab] pass in array of dependencies for hook
 
   return (
-    <>
+    <React.Fragment>
       <ElevationScroll>
         {/* has a default class of position='fixed' */}
         <AppBar position="fixed">
@@ -187,56 +221,28 @@ const Header = () => {
               MenuListProps={{ onMouseLeave: handleMenuClose }} // menu will close using MenuListProps when mouse leave
               elevation={0}
             >
-              <MenuItem
-                onClick={() => {
-                  handleMenuClose();
-                  setActiveTab(1);
-                }}
-                component={Link}
-                to="/Services"
-                classes={{ root: classes.menuItem }}
-              >
-                Services
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleMenuClose();
-                  setActiveTab(1);
-                }}
-                component={Link}
-                to="/customsoftware"
-                classes={{ root: classes.menuItem }}
-              >
-                Custom Software Development
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleMenuClose();
-                  setActiveTab(1);
-                }}
-                component={Link}
-                to="/mobileapps"
-                classes={{ root: classes.menuItem }}
-              >
-                Mobile Development
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  handleMenuClose();
-                  setActiveTab(1);
-                }}
-                component={Link}
-                to="/websites"
-                classes={{ root: classes.menuItem }}
-              >
-                Web Development
-              </MenuItem>
+              {menuOptions.map((option, i) => (
+                <MenuItem
+                  key={option}
+                  component={Link}
+                  to={option.link}
+                  classes={{ root: classes.menuItem }}
+                  onClick={(e) => {
+                    handleMenuItemClick(e, i);
+                    setActiveTab(1);
+                    handleMenuClose();
+                  }}
+                  selected={i === selectedIndex && activeTab === 1} // determined selected item against the current index and check if we are on main services tab
+                >
+                  {option.name}
+                </MenuItem>
+              ))}
             </Menu>
           </Toolbar>
         </AppBar>
       </ElevationScroll>
       <div className={classes.toolbarMargin} />
-    </>
+    </React.Fragment>
   );
 };
 
