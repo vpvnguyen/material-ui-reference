@@ -13,6 +13,9 @@ import { Link } from "react-router-dom";
 // menu
 import { Menu, MenuItem } from "@material-ui/core";
 
+import { useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
+
 import logo from "../../assets/logo.svg";
 
 // adds subtle effect where header will lift when the page is scrolled
@@ -34,9 +37,25 @@ const useStyles = makeStyles((theme) => ({
     // use spread operator to copy over properties from theme
     ...theme.mixins.toolbar, // gives a bit of height to app bar to push content below the appbar
     marginBottom: "3em", // add extra spacing to push content to offset the extra height added from the responsive units from the logo
+    // smaller gap between header and content when screen is md or lower
+    [theme.breakpoints.down("md")]: {
+      marginBottom: "2em",
+    },
+    // phone sizes
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: "1.25em",
+    },
   },
   logo: {
     height: "8em",
+    // smaller logo when screen is md or lower
+    [theme.breakpoints.down("md")]: {
+      height: "7em",
+    },
+    // phone sizes
+    [theme.breakpoints.down("xs")]: {
+      height: "5.5em",
+    },
   },
   logoContainer: {
     padding: 0, // removes padding from button
@@ -77,6 +96,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
   const classes = useStyles();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("md"));
   const [activeTab, setActiveTab] = useState(0);
   const [menuAnchor, setMenuAnchor] = useState(null); // where menu will be rendered
   const [menuOpen, setMenuOpen] = useState(false); // visibility of menu
@@ -102,7 +123,7 @@ const Header = () => {
     setSelectedIndex(i);
   };
 
-  const menuOptions = [
+  const servicesMenuOptions = [
     { name: "Services", link: "/services" },
     { name: "Custom Software Development", link: "/customsoftware" },
     { name: "Mobile Development", link: "/mobileapps" },
@@ -144,6 +165,83 @@ const Header = () => {
     }
   }, [activeTab]); // [activeTab] pass in array of dependencies for hook
 
+  const tabs = (
+    <React.Fragment>
+      <Tabs
+        value={activeTab}
+        onChange={handleActiveTab}
+        className={classes.tabContainer}
+        indicatorColor="primary" // set active indicator to the same color as the header; hiding the indicator
+      >
+        <Tab className={classes.tab} label="Home" component={Link} to="/" />
+        <Tab
+          aria-owns={menuAnchor ? "simple-menu" : undefined} // set menu name when menuAnchor is true
+          aria-haspopup={menuAnchor ? "true" : undefined}
+          className={classes.tab}
+          component={Link}
+          onMouseOver={(e) => handleMenuOpen(e)} // opens menu on mouseover
+          label="Services"
+          to="/services"
+        />
+        <Tab
+          className={classes.tab}
+          label="The Revolution"
+          component={Link}
+          to="revolution"
+        />
+        <Tab
+          className={classes.tab}
+          label="About Us"
+          component={Link}
+          to="about"
+        />
+        <Tab
+          className={classes.tab}
+          label="Contact Us"
+          component={Link}
+          to="contact"
+        />
+      </Tabs>
+      <Button
+        variant="contained"
+        color="secondary"
+        className={classes.button}
+        component={Link}
+        to="estimate"
+      >
+        Free Estimate
+      </Button>
+      <Menu
+        id="simple-menu" // should match to tab component of aria-owns
+        classes={{ paper: classes.menu }}
+        anchorEl={menuAnchor}
+        open={menuOpen}
+        onClose={() => {
+          handleMenuClose();
+          setActiveTab(1);
+        }}
+        MenuListProps={{ onMouseLeave: handleMenuClose }} // menu will close using MenuListProps when mouse leave
+        elevation={0}
+      >
+        {servicesMenuOptions.map((option, i) => (
+          <MenuItem
+            key={option}
+            component={Link}
+            to={option.link}
+            classes={{ root: classes.menuItem }}
+            onClick={(e) => {
+              handleMenuItemClick(e, i);
+              setActiveTab(1);
+              handleMenuClose();
+            }}
+            selected={i === selectedIndex && activeTab === 1} // determined selected item against the current index and check if we are on main services tab
+          >
+            {option.name}
+          </MenuItem>
+        ))}
+      </Menu>
+    </React.Fragment>
+  );
   return (
     <React.Fragment>
       <ElevationScroll>
@@ -160,84 +258,8 @@ const Header = () => {
             >
               <img alt="company logo" className={classes.logo} src={logo} />
             </Button>
-            <Tabs
-              value={activeTab}
-              onChange={handleActiveTab}
-              className={classes.tabContainer}
-              indicatorColor="primary" // set active indicator to the same color as the header; hiding the indicator
-            >
-              <Tab
-                className={classes.tab}
-                label="Home"
-                component={Link}
-                to="/"
-              />
-              <Tab
-                aria-owns={menuAnchor ? "simple-menu" : undefined} // set menu name when menuAnchor is true
-                aria-haspopup={menuAnchor ? "true" : undefined}
-                className={classes.tab}
-                component={Link}
-                onMouseOver={(e) => handleMenuOpen(e)} // opens menu on mouseover
-                label="Services"
-                to="/services"
-              />
-              <Tab
-                className={classes.tab}
-                label="The Revolution"
-                component={Link}
-                to="revolution"
-              />
-              <Tab
-                className={classes.tab}
-                label="About Us"
-                component={Link}
-                to="about"
-              />
-              <Tab
-                className={classes.tab}
-                label="Contact Us"
-                component={Link}
-                to="contact"
-              />
-            </Tabs>
-            <Button
-              variant="contained"
-              color="secondary"
-              className={classes.button}
-              component={Link}
-              to="estimate"
-            >
-              Free Estimate
-            </Button>
-            <Menu
-              id="simple-menu" // should match to tab component of aria-owns
-              classes={{ paper: classes.menu }}
-              anchorEl={menuAnchor}
-              open={menuOpen}
-              onClose={() => {
-                handleMenuClose();
-                setActiveTab(1);
-              }}
-              MenuListProps={{ onMouseLeave: handleMenuClose }} // menu will close using MenuListProps when mouse leave
-              elevation={0}
-            >
-              {menuOptions.map((option, i) => (
-                <MenuItem
-                  key={option}
-                  component={Link}
-                  to={option.link}
-                  classes={{ root: classes.menuItem }}
-                  onClick={(e) => {
-                    handleMenuItemClick(e, i);
-                    setActiveTab(1);
-                    handleMenuClose();
-                  }}
-                  selected={i === selectedIndex && activeTab === 1} // determined selected item against the current index and check if we are on main services tab
-                >
-                  {option.name}
-                </MenuItem>
-              ))}
-            </Menu>
+            {/* if device is large or greater, show tabs */}
+            {matches ? null : tabs}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
