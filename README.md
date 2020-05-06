@@ -12,4 +12,12 @@
 
 - styling - themes
 - customize components with a consistent look
-- benefits: palettes. JSS working at runtime and server-side. less than 15kb. 
+- benefits: palettes. JSS working at runtime and server-side. less than 15kb.
+
+### Responsive Design
+
+Best practices:
+
+- Relative Units: percentages, rem, em, vh, vw
+- Media Queries: system that uses react hook API
+- Grid System: structure content on screen and resize according to device
