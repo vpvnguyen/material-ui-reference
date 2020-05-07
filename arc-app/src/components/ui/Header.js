@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+// styles
+import { makeStyles } from "@material-ui/styles";
+import { useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
+
+// mui components
 import {
   AppBar,
   Toolbar,
@@ -7,15 +15,12 @@ import {
   Tab,
   Button,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import { Link } from "react-router-dom";
 
-// menu
 import { Menu, MenuItem } from "@material-ui/core";
-
-import { useMediaQuery } from "@material-ui/core";
-import { useTheme } from "@material-ui/core/styles";
-
+import { SwipeableDrawer } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import { List, ListItem, ListItemText } from "@material-ui/core";
 import logo from "../../assets/logo.svg";
 
 // adds subtle effect where header will lift when the page is scrolled
@@ -91,13 +96,25 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       opacity: 1,
     },
+    drawerIconContainer: {
+      marginLeft: "auto",
+      // removes drawer icon effect on hover
+      "&:hover": {
+        backgroundColor: "transparent",
+      },
+    },
   },
 }));
 
 const Header = () => {
   const classes = useStyles();
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("md"));
+  const mediaQueryDownMd = useMediaQuery(theme.breakpoints.down("md"));
+
+  // ios performance for swipeable drawer
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [menuAnchor, setMenuAnchor] = useState(null); // where menu will be rendered
   const [menuOpen, setMenuOpen] = useState(false); // visibility of menu
@@ -242,6 +259,87 @@ const Header = () => {
       </Menu>
     </React.Fragment>
   );
+
+  const drawer = (
+    <React.Fragment>
+      {/* iOS is hosted on high-end devices. The backdrop transition can be enabled without dropping frames. The performance will be good enough.
+iOS has a "swipe to go back" feature that interferes with the discovery feature, so discovery has to be disabled. */}
+      <SwipeableDrawer
+        disableBackdropTransition={!iOS}
+        disableDiscovery={iOS}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        onOpen={() => setDrawerOpen(true)}
+      >
+        <List
+          disablePadding // disables spacing from top
+        >
+          <ListItem
+            onClick={() => setDrawerOpen(false)}
+            divider
+            button
+            component={Link}
+            to="/"
+          >
+            <ListItemText disableTypography>Home</ListItemText>
+          </ListItem>
+          <ListItem
+            onClick={() => setDrawerOpen(false)}
+            divider
+            button
+            component={Link}
+            to="/services"
+          >
+            <ListItemText disableTypography>Services</ListItemText>
+          </ListItem>
+          <ListItem
+            onClick={() => setDrawerOpen(false)}
+            divider
+            button
+            component={Link}
+            to="/revolution"
+          >
+            <ListItemText disableTypography>The Revolution</ListItemText>
+          </ListItem>
+          <ListItem
+            onClick={() => setDrawerOpen(false)}
+            divider
+            button
+            component={Link}
+            to="/about"
+          >
+            <ListItemText disableTypography>About Us</ListItemText>
+          </ListItem>
+          <ListItem
+            onClick={() => setDrawerOpen(false)}
+            divider
+            button
+            component={Link}
+            to="/contact"
+          >
+            <ListItemText disableTypography>Contact</ListItemText>
+          </ListItem>
+          <ListItem
+            onClick={() => setDrawerOpen(false)}
+            divider
+            button
+            component={Link}
+            to="/estimate"
+          >
+            <ListItemText disableTypography>Free Estimate</ListItemText>
+          </ListItem>
+        </List>
+      </SwipeableDrawer>
+      <IconButton
+        className={classes.drawerIconContainer}
+        onClick={() => setDrawerOpen(!drawerOpen)} // will flip drawer on click
+        disableRipple
+      >
+        <MenuIcon />
+      </IconButton>
+    </React.Fragment>
+  );
+
   return (
     <React.Fragment>
       <ElevationScroll>
@@ -259,7 +357,7 @@ const Header = () => {
               <img alt="company logo" className={classes.logo} src={logo} />
             </Button>
             {/* if device is large or greater, show tabs */}
-            {matches ? null : tabs}
+            {mediaQueryDownMd ? drawer : tabs}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
