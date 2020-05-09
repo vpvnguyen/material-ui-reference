@@ -104,6 +104,16 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  drawer: {
+    backgroundColor: theme.palette.common.blue,
+  },
+  drawerItem: {
+    ...theme.typography.tab,
+    color: "white",
+  },
+  drawerItemEstimate: {
+    backgroundColor: theme.palette.common.orange,
+  },
 }));
 
 const Header = () => {
@@ -265,6 +275,7 @@ const Header = () => {
       {/* iOS is hosted on high-end devices. The backdrop transition can be enabled without dropping frames. The performance will be good enough.
 iOS has a "swipe to go back" feature that interferes with the discovery feature, so discovery has to be disabled. */}
       <SwipeableDrawer
+        classes={{ paper: classes.drawer }}
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         open={drawerOpen}
@@ -281,7 +292,9 @@ iOS has a "swipe to go back" feature that interferes with the discovery feature,
             component={Link}
             to="/"
           >
-            <ListItemText disableTypography>Home</ListItemText>
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Home
+            </ListItemText>
           </ListItem>
           <ListItem
             onClick={() => setDrawerOpen(false)}
@@ -290,7 +303,9 @@ iOS has a "swipe to go back" feature that interferes with the discovery feature,
             component={Link}
             to="/services"
           >
-            <ListItemText disableTypography>Services</ListItemText>
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Services
+            </ListItemText>
           </ListItem>
           <ListItem
             onClick={() => setDrawerOpen(false)}
@@ -299,7 +314,9 @@ iOS has a "swipe to go back" feature that interferes with the discovery feature,
             component={Link}
             to="/revolution"
           >
-            <ListItemText disableTypography>The Revolution</ListItemText>
+            <ListItemText className={classes.drawerItem} disableTypography>
+              The Revolution
+            </ListItemText>
           </ListItem>
           <ListItem
             onClick={() => setDrawerOpen(false)}
@@ -308,7 +325,9 @@ iOS has a "swipe to go back" feature that interferes with the discovery feature,
             component={Link}
             to="/about"
           >
-            <ListItemText disableTypography>About Us</ListItemText>
+            <ListItemText className={classes.drawerItem} disableTypography>
+              About Us
+            </ListItemText>
           </ListItem>
           <ListItem
             onClick={() => setDrawerOpen(false)}
@@ -317,16 +336,21 @@ iOS has a "swipe to go back" feature that interferes with the discovery feature,
             component={Link}
             to="/contact"
           >
-            <ListItemText disableTypography>Contact</ListItemText>
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Contact
+            </ListItemText>
           </ListItem>
           <ListItem
+            className={classes.drawerItemEstimate}
             onClick={() => setDrawerOpen(false)}
             divider
             button
             component={Link}
             to="/estimate"
           >
-            <ListItemText disableTypography>Free Estimate</ListItemText>
+            <ListItemText className={classes.drawerItem} disableTypography>
+              Free Estimate
+            </ListItemText>
           </ListItem>
         </List>
       </SwipeableDrawer>
