@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/App";
+import App from "./App";
 
 ReactDOM.render(
   // MUI may not support strict mode. Need to check.
